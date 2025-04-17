@@ -56,33 +56,6 @@ async function get_HN_item(){
     return chrome.storage.local.get([key]);
 }
 
-function create_refresh_button(){
-    let button_id = "highlight-refresh-btn";
-    if(document.getElementById(button_id)){
-        return true;
-    }else{
-        let button = document.createElement("button");
-        button.id = button_id;
-        button.textContent = "Get new comments";
-        Object.assign(button.style, {
-            position: "fixed",
-            top: "10px",
-            right: "10px",
-            zIndex: 9999,
-            padding: "10px 15px",
-        });
-        button.onclick = function(){
-            store_data().then(location.reload());
-        }
-        return button;
-    }
-}
-
-new_button = null;//create_refresh_button();
-if(new_button){
-    document.body.appendChild(new_button);
-}
-
 function isEmpty(obj){
     for (const prop in obj){
         if (Object.hasOwn(obj, prop)){
