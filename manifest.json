@@ -5,6 +5,11 @@
   "description": "Refresh a Hacker News [HN] page and highlight new comments since the last visit.",
   "permissions": ["storage", "scripting"],
   "host_permissions": ["https://news.ycombinator.com/item?id=*"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "HN-nph@alanmmckay.github.io"
+    }
+  },
   "content_scripts": [
     {
       "matches": ["https://news.ycombinator.com/item?id=*"],
