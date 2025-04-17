@@ -97,45 +97,45 @@ get_HN_item().then( function(old_HN_item){
     if(!isEmpty(old_HN_item)){
         let new_count = get_comment_count();
         let key = "HN_timestamp_" + location.href;
-        let diff = (new_count - old_HN_item[key]["count"]).toString();
-        let posts = document.getElementsByClassName("comtr");
-        let count = 0;
-        for( let post of posts){
-            let age_span = post.getElementsByClassName("age")[0];
-            if(age_span){
-                let age_str = age_span.getAttribute("title");
-                let timestamp_str = age_str.split(/[ ,]+/)[1];
-                let timestamp_num = Number(timestamp_str);
-                if(timestamp_num > old_HN_item[key]["max"]){
-                    count += 1;
-                    let anchor = age_span.getElementsByTagName("a")[0];
-                    anchor.style['color'] = '#b37400';
-                    anchor.style['font-weight'] = 'bold';
-                    post.style['background-color'] = '#e6e6e6';
-                    age_span.id = "np_"+count.toString();
-                    console.log("count");
-                    console.log(count);
-                    console.log(diff);
-                    if(count < diff){
-                        let new_anchor = document.createElement("a");
-                        new_anchor.href = "#np_"+(count+1).toString();
-                        new_anchor.innerHTML = "next unread";
-                        age_span.innerHTML = age_span.innerHTML + " | ";
-                        age_span.appendChild(new_anchor);
-                    }
+        if(new_count > old_HN_item[key]["count"]){
 
-                    //insert new anchor into age_span
-                }
-            }
-        }
-        if(new_count > old_HN_item[key]["count"]){ //The above loop should be in this.
+            let diff_count = (new_count - old_HN_item[key]["count"]).toString();
+
+            let posts = document.getElementsByClassName("comtr");
+            let count = 0;
+
+            for( let post of posts){
+                let age_span = post.getElementsByClassName("age")[0];
+                if(age_span){
+                    let age_str = age_span.getAttribute("title");
+                    let timestamp_str = age_str.split(/[ ,]+/)[1];
+                    let timestamp_num = Number(timestamp_str);
+                    if(timestamp_num > old_HN_item[key]["max"]){
+                        count += 1;
+                        let anchor = age_span.getElementsByTagName("a")[0];
+                        age_span.id = "np_"+count.toString();
+                        anchor.style['color'] = '#b37400';
+                        anchor.style['font-weight'] = 'bold';
+                        post.style['background-color'] = '#e6e6e6';
+
+                        if(count < diff_count){
+                            let new_anchor = document.createElement("a");
+                            new_anchor.href = "#np_"+(count+1).toString();
+                            new_anchor.innerHTML = "next unread";
+                            age_span.innerHTML = age_span.innerHTML + " | ";
+                            age_span.appendChild(new_anchor);
+                        }
+                    }//end timestamp vs max check
+                }//end age_span exists check
+            }//end post iterator
+
             let anchor = get_count_anchor();
             anchor.style['color'] = '#b37400';
             anchor.style['font-wieght'] = 'bold';
             let subline = get_subline_span();
-            subline.innerHTML = subline.innerHTML + " <a href='#np_1'>("+diff+" new)</a>";
-        }
-    }
+            subline.innerHTML = subline.innerHTML + " <a href='#np_1'>("+diff_count+" new)</a>";
+        }//end new-post-count vs old-post-count check
+    }//end if HN_data exists
 }).then( store_data );
 
 /* ----
