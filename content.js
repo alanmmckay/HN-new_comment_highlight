@@ -2,9 +2,13 @@ async function print_val(val){
     console.log(val);
 }
 
-function get_count_anchor(){
+function get_subline_span(){
     let main_post = document.getElementsByClassName("fatitem")[0];
-    let subline = main_post.getElementsByClassName("subline")[0];
+    return main_post.getElementsByClassName("subline")[0];
+}
+
+function get_count_anchor(){
+    let subline = get_subline_span();
     let anchors = Array.from(subline.getElementsByTagName("a"));
     for( let anchor of anchors ){
         if(anchor.href){
@@ -91,8 +95,11 @@ function isEmpty(obj){
 get_HN_item().then( function(old_HN_item){
     console.log(old_HN_item);
     if(!isEmpty(old_HN_item)){
+        let new_count = get_comment_count();
         let key = "HN_timestamp_" + location.href;
+        let diff = (new_count - old_HN_item[key]["count"]).toString();
         let posts = document.getElementsByClassName("comtr");
+        let count = 0;
         for( let post of posts){
             let age_span = post.getElementsByClassName("age")[0];
             if(age_span){
@@ -100,18 +107,33 @@ get_HN_item().then( function(old_HN_item){
                 let timestamp_str = age_str.split(/[ ,]+/)[1];
                 let timestamp_num = Number(timestamp_str);
                 if(timestamp_num > old_HN_item[key]["max"]){
+                    count += 1;
                     let anchor = age_span.getElementsByTagName("a")[0];
                     anchor.style['color'] = '#b37400';
                     anchor.style['font-weight'] = 'bold';
                     post.style['background-color'] = '#e6e6e6';
+                    age_span.id = "np_"+count.toString();
+                    console.log("count");
+                    console.log(count);
+                    console.log(diff);
+                    if(count < diff){
+                        let new_anchor = document.createElement("a");
+                        new_anchor.href = "#np_"+(count+1).toString();
+                        new_anchor.innerHTML = "next unread";
+                        age_span.innerHTML = age_span.innerHTML + " | ";
+                        age_span.appendChild(new_anchor);
+                    }
+
+                    //insert new anchor into age_span
                 }
             }
         }
-        let new_count = get_comment_count();
-        if(new_count > old_HN_item[key]["count"]){
+        if(new_count > old_HN_item[key]["count"]){ //The above loop should be in this.
             let anchor = get_count_anchor();
             anchor.style['color'] = '#b37400';
             anchor.style['font-wieght'] = 'bold';
+            let subline = get_subline_span();
+            subline.innerHTML = subline.innerHTML + " <a href='#np_1'>("+diff+" new)</a>";
         }
     }
 }).then( store_data );
