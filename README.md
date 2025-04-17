@@ -45,3 +45,5 @@ This will open the Add-ons Manager in a new tab. From here, select the gear icon
 ![](images/file_picker_ff.png)
 
 Within the dashboard, select `Load Temporary Add-on` and select the zip file that was unpacked from the archive downloaded from `git`. It should be labeled something like `HN-nph-x.y.zip`.
+
+Note that using `Debug Add-ons` will require the extension to be reloaded everytime the browser is restarted.
