@@ -30,7 +30,6 @@ function get_comment_count(){
 }
 
 async function store_data(){
-
     let max = 0;
     let posts = document.getElementsByClassName("comtr");
     for(let post of posts){
@@ -44,9 +43,7 @@ async function store_data(){
             }
         }
     }
-
     let count = get_comment_count();
-
     let key = "HN_timestamp_" + location.href;
     return chrome.storage.local.set({[key]: {"max":max,"count":count}});
 }
@@ -66,7 +63,7 @@ function isEmpty(obj){
 }
 
 get_HN_item().then( function(old_HN_item){
-    console.log(old_HN_item);
+    //console.log(old_HN_item);
     if(!isEmpty(old_HN_item)){
         let new_count = get_comment_count();
         let key = "HN_timestamp_" + location.href;

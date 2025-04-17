@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "HN - Highlight New Comments",
-  "version": "1.0",
+  "version": "0.9",
   "description": "Refresh a Hacker News [HN] page and highlight new comments since the last visit.",
   "permissions": ["storage", "scripting"],
   "host_permissions": ["https://news.ycombinator.com/item?id=*"],
